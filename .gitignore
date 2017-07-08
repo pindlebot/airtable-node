@@ -1,4 +1,3 @@
 node_modules
 coverage
-secrets.txt
-coveralls.yml
+.coveralls.yml
