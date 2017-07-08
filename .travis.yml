@@ -1,8 +1,6 @@
 language: node_js
 node_js:
 - 7
-- 6
-- 4
 branches:
   only:
   - master
@@ -13,7 +11,6 @@ script:
 - npm run test
 - npm run build
 - npm publish
-after_script: cat ./coverage/lcov.info | coveralls
 env:
   global:
   - secure: Zgg/SoRQF29osRiEgMJuZlji3qdWVJOu8rzLWTiZKNsbeloRhPctrIQpHSc8XzOu+uBYgC5RDbh9hhRAIlZisu29z+QsuXN/BGcBCB378343vJmkQCFua7u4N12onFA4KWrKIAemsqlvf4olUycsUumQiPB1picDg45A5U7ymZcXg39VkMfffUZ3vTvAhxcYtCcVSVKknpQgBGQE6B+q/gVYF/uU/dBMFQ13rBfNmFr9xMH8lJCaM3Trx+HLZwYlDf1GJptTE5pWL4yEEEK73OrmFPDuQDCHe8gIczLcgcQx77ydpAAI3PVtG9WLOeWkxqSL2HX2Rt8tbbgJ/HkQARq1B7+GAbCIMEjGmh7j1I+y5VOpoGDFNupO//UpHN/qnR5RPsamVuqmf8BKRHFksmovpiZKG/39bgYst+O7yJj89w3pJk++6DMsorwznkWmOIn7hV/j8j8B35bE41TPaZlM6bQgDNZolxh1M5eme7ZLuSUXwI1oGskatdeKn4C3oTn9k1k3MMUsKIt1cLobdqDTqocazJnNOfGGtuCUzjcYKktotnbFXz0PhYnL/PVkEW9BP/Rpo32V1++YNy++aKVqVzaWNVaET1hMjgmu+C9k8TzdoN8M36mF/CgbnzYDf/l2rQwM+SB9bEwKHdQJPqdgpyZ23SN1yiFQpx5On2s=
