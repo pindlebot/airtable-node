@@ -6,9 +6,6 @@ function createFetch(params, url) {
   .then(resp => {
     return resp
   })
-  .catch(err => {
-    throw new Error(err)
-  })
 }
 
 function Airtable(params, count = 10) {
@@ -39,8 +36,7 @@ Airtable.prototype.list = function (view = this.airtable.view, count = this.airt
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}?maxRecords=${count}&view=${view}`;
-  var resp = this.createFetch(params, url);
-  return resp;
+  return this.createFetch(params, url);
 };
 
 Airtable.prototype.update = function (fields, id) {
@@ -52,8 +48,7 @@ Airtable.prototype.update = function (fields, id) {
     body: JSON.stringify({fields})
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var resp = this.createFetch(params, url);
-  return resp;
+  return this.createFetch(params, url);
 };
 
 Airtable.prototype.retrieve = function (id) {
@@ -63,8 +58,7 @@ Airtable.prototype.retrieve = function (id) {
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var resp = this.createFetch(params, url);
-  return resp;
+  return this.createFetch(params, url);
 };
 
 Airtable.prototype.delete = function (id) {
@@ -74,8 +68,7 @@ Airtable.prototype.delete = function (id) {
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var resp = this.createFetch(params, url);
-  return resp;
+  return this.createFetch(params, url);
 };
 
 Airtable.prototype.create = function (fields) {
@@ -87,8 +80,7 @@ Airtable.prototype.create = function (fields) {
     body: JSON.stringify({fields})
   };
   var url = `https://api.airtable.com/v0/${base}/${table}`;
-  var data = this.createFetch(params, url);
-  return data;
+  return this.createFetch(params, url);
 };
 
 module.exports = Airtable;
