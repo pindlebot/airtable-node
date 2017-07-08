@@ -7,6 +7,11 @@ var expect = chai.expect;
 var should = chai.should();
 chai.use(chaiAsPromised);
 
+var apiKey = process.env.AIRTABLE_API_KEY
+var base = process.env.AIRTABLE_BASE
+var table = process.env.AIRTABLE_TABLE
+var view = process.env.AIRTABLE_VIEW
+
 describe('Airtable.list', function () {
   it('Airtable.list', function (done) {
     var airtable = new Airtable({apiKey, base, table, view});
