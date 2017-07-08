@@ -13,7 +13,6 @@ install:
 script:
 - npm run test
 - npm run build
-- npm publish
 deploy:
   provider: npm
   email: ben@focuswish.com
