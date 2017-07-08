@@ -3,3 +3,4 @@ coverage
 .coveralls.yml
 .envcoverage
 .nyc_output
+.env
