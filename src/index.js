@@ -3,9 +3,9 @@ const fetch = require('isomorphic-fetch');
 
 function createFetch(params, url) {
   return fetch(url, params).then(resp => resp.json())
-  .then(resp => {
-    return resp
-  })
+    .then(resp => {
+      return resp;
+    });
 }
 
 function Airtable(params, count = 10) {

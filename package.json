@@ -37,10 +37,10 @@
   "scripts": {
     "build": "babel src -d lib",
     "lint": "eslint ./src --fix",
-    "travis-test": "mocha",
+    "travis-test": "nyc ./node_modules/.bin/mocha",
     "test": "cross-env NODE_ENV=test nyc mocha",
     "deploy": "git add . && git commit -am \"new\" && npm version patch && git push origin -u master",
-    "report": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "report": "nyc npm test && nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
   },
   "eslintConfig": {
     "extends": "xo-space",
