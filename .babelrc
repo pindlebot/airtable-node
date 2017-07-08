@@ -1,1 +1,8 @@
-{ "presets": ["es2017"] }
+{
+  "presets": ["es2017"],
+  "env": {
+    "test": {
+      "plugins": [ "istanbul" ]
+    }
+  }
+}

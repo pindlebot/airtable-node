@@ -10,10 +10,103 @@ $ npm install --save airtable-node
 ## Usage
 
 ```js
-const airtableNode = require('airtable-node');
+var Airtable = require('airtable-node');
 
-airtableNode('Rainbow');
+var airtable = new Airtable({apiKey, base, table, view})
+
+var airtable.list().then(resp => {
+  console.log(resp)
+})
+
+var view = 'my airtable view'
+var count = 20
+
+var airtable.list(view, count).then(resp => {
+  console.log(resp)
+})
+
 ```
+
+## Methods 
+
+### Airtable({apiKey, base, table, view}, count)
+
+- required: apiKey, base, table
+- optional: view, count 
+
+
+#### Example
+
+```js
+var airtable = new Airtable({apiKey, base, table, view}, count)
+```
+
+### Airtable.list(view, count)
+
+- optional: view, count
+- required: view (if no view is set by Airtable(...))
+
+Airtable.list returns a promise.
+
+#### Example
+
+```js
+var airtable = new Airtable({apiKey, base, table, view}, count)
+var airtable.list().then(resp => {
+  console.log(resp)
+})
+
+```
+
+### Airtable.update(fields, id)
+
+- required: fields, id
+
+#### Example
+
+```js
+var airtable = new Airtable({apiKey, base, table})
+var id = 'airtable record id'
+var fields = {
+  some_field_name: 'some value'
+}
+
+airtable.update(fields, id).then(resp => {
+  console.log(resp)
+})
+```
+
+### Airtable.retrieve(id)
+
+- required: id
+
+```js
+var airtable = new Airtable({apiKey, base, table})
+var id = 'airtable record id'
+
+airtable.update(id).then(resp => {
+  console.log(resp)
+})
+```
+
+
+### Airtable.delete(id)
+- required: id
+
+#### Example
+
+```js
+var airtable = new Airtable({apiKey, base, table})
+var id = 'airtable record id'
+
+airtable.delete(id).then(resp => {
+  console.log(resp)
+})
+
+```
+
+
+
 ## License
 
 MIT © [Ben](http://www.focuswish.com)

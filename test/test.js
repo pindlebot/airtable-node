@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Airtable = require('../lib');
+var Airtable = require('../src');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 var assert = chai.assert;
@@ -7,10 +7,14 @@ var expect = chai.expect;
 var should = chai.should();
 chai.use(chaiAsPromised);
 
-var apiKey = process.env.AIRTABLE_API_KEY
-var base = process.env.AIRTABLE_BASE
-var table = process.env.AIRTABLE_TABLE
-var view = process.env.AIRTABLE_VIEW
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') {
+  require('env2')('.env');
+}
+
+var apiKey = process.env.AIRTABLE_API_KEY;
+var base = process.env.AIRTABLE_BASE;
+var table = process.env.AIRTABLE_TABLE;
+var view = process.env.AIRTABLE_VIEW;
 
 describe('Airtable.list', function () {
   it('Airtable.list', function (done) {
@@ -28,25 +32,25 @@ describe('Airtable.create', function () {
 
 describe('Test errors', function () {
   it('Airtable', function () {
-    assert.throws(function() {
-      Airtable({})
-    }, Error)
+    assert.throws(function () {
+      Airtable({});
+    }, Error);
   });
 });
 
 describe('Test errors', function () {
   it('Airtable', function () {
-    assert.throws(function() {
-      Airtable({apiKey: 'test'})
-    }, Error)
+    assert.throws(function () {
+      Airtable({apiKey: 'test'});
+    }, Error);
   });
 });
 
 describe('Test errors', function () {
   it('Airtable', function () {
-    assert.throws(function() {
-      Airtable({apiKey: 'test', base: 'base'})
-    }, Error)
+    assert.throws(function () {
+      Airtable({apiKey: 'test', base: 'base'});
+    }, Error);
   });
 });
 

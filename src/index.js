@@ -1,21 +1,25 @@
 'use strict';
-var fetch = require('isomorphic-fetch');
+const fetch = require('isomorphic-fetch');
 
-async function createFetch(params, url) {
-  const resp = await fetch(url, params);
-  const json = await resp.json();
-  return json;
+function createFetch(params, url) {
+  return fetch(url, params).then(resp => resp.json())
+  .then(resp => {
+    return resp
+  })
+  .catch(err => {
+    throw new Error(err)
+  })
 }
 
 function Airtable(params, count = 10) {
-  var {apiKey, base, table, view = null} = params
+  var {apiKey, base, table, view = null} = params;
 
-  var required = new Array('apiKey', 'base', 'table')
+  var required = ['apiKey', 'base', 'table'];
   required.forEach(req => {
-    if(!params[req]) {
-      throw new Error(req + ' is required.')
+    if (!params[req]) {
+      throw new Error(req + ' is required.');
     }
-  })
+  });
 
   this.airtable = {};
   this.airtable.base = base;
@@ -28,19 +32,18 @@ function Airtable(params, count = 10) {
   this.createFetch = createFetch;
 }
 
-Airtable.prototype.list = async function (view = this.airtable.view, count = this.airtable.count) {
+Airtable.prototype.list = function (view = this.airtable.view, count = this.airtable.count) {
   var {base, table, headers} = this.airtable;
   var params = {
     method: 'GET',
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}?maxRecords=${count}&view=${view}`;
-  var data = await this.createFetch(params, url);
-  console.log(data)
-  return data;
+  var resp = this.createFetch(params, url);
+  return resp;
 };
 
-Airtable.prototype.update = async function (fields, id) {
+Airtable.prototype.update = function (fields, id) {
   var {base, table, headers} = this.airtable;
   headers[`Content-type`] = 'application/json';
   var params = {
@@ -49,33 +52,33 @@ Airtable.prototype.update = async function (fields, id) {
     body: JSON.stringify({fields})
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var resp = await this.createFetch(params, url);
+  var resp = this.createFetch(params, url);
   return resp;
 };
 
-Airtable.prototype.retrieve = async function (id) {
+Airtable.prototype.retrieve = function (id) {
   var {base, table, headers} = this.airtable;
   var params = {
     method: 'GET',
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var data = await this.createFetch(params, url);
-  return data;
+  var resp = this.createFetch(params, url);
+  return resp;
 };
 
-Airtable.prototype.delete = async function (id) {
+Airtable.prototype.delete = function (id) {
   var {base, table, headers} = this.airtable;
   var params = {
     method: 'DELETE',
     headers
   };
   var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
-  var data = await this.createFetch(params, url);
-  return data;
+  var resp = this.createFetch(params, url);
+  return resp;
 };
 
-Airtable.prototype.create = async function (fields) {
+Airtable.prototype.create = function (fields) {
   var {base, table, headers} = this.airtable;
   headers[`Content-type`] = 'application/json';
   var params = {
@@ -84,7 +87,7 @@ Airtable.prototype.create = async function (fields) {
     body: JSON.stringify({fields})
   };
   var url = `https://api.airtable.com/v0/${base}/${table}`;
-  var data = await this.createFetch(params, url);
+  var data = this.createFetch(params, url);
   return data;
 };
 
