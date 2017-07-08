@@ -1,0 +1,49 @@
+{
+  "name": "airtable-node",
+  "version": "0.0.0",
+  "description": "Node wrapper for Airtable API",
+  "homepage": "https://github.com/focuswish/airtable-node",
+  "author": {
+    "name": "Ben",
+    "email": "ben@focuswish.com",
+    "url": "http://www.focuswish.com"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "keywords": [
+    "airtable",
+    "node",
+    "api"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "chai": "^4.0.2",
+    "chai-as-promised": "^7.1.1",
+    "coveralls": "^2.13.1",
+    "eslint": "^4.1.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "nsp": "^2.6.3"
+  },
+  "scripts": {
+    "prepublish": "nsp check",
+    "test": "mocha",
+    "build": "babel src -d lib"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "node": true
+    }
+  },
+  "repository": "focuswish/airtable-node",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}

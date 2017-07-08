@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Ben",
+      "authorEmail": "ben@focuswish.com",
+      "authorUrl": "http://www.focuswish.com"
+    }
+  }
+}

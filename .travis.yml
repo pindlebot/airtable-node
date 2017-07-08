@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 7
+  - 6
+  - 4
+branches:
+  only:
+  - master
+install:
+- npm set progress=false
+- npm install
+script:
+- npm run test
+- npm run build
+after_script: 'cat ./coverage/lcov.info | coveralls'
