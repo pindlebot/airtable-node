@@ -1,7 +1,7 @@
 {
   "name": "airtable-node",
   "version": "0.0.5",
-  "description": "Node wrapper for Airtable API",
+  "description": "Node wrapper for Airtable API.",
   "homepage": "https://github.com/focuswish/airtable-node",
   "author": {
     "name": "Ben",
