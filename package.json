@@ -31,7 +31,7 @@
   "scripts": {
     "test": "mocha",
     "build": "babel src -d lib",
-    "deploy": "git add . && git commit -am \"new\" && npm version patch && git commit -am \"new\" && git push origin -u master"
+    "deploy": "git add . && git commit -am \"new\" && npm version patch && git push origin -u master"
   },
   "eslintConfig": {
     "extends": "xo-space",
