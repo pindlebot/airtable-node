@@ -4,7 +4,7 @@
 ## Installation
 
 ```sh
-$ npm install --save airtable-node
+$ npm i airtable-node --save
 ```
 
 ## Usage
@@ -14,14 +14,14 @@ var Airtable = require('airtable-node');
 
 var airtable = new Airtable({apiKey, base, table, view})
 
-var airtable.list().then(resp => {
+airtable.list().then(resp => {
   console.log(resp)
 })
 
 var view = 'my airtable view'
 var count = 20
 
-var airtable.list(view, count).then(resp => {
+airtable.list(view, count).then(resp => {
   console.log(resp)
 })
 
@@ -52,7 +52,7 @@ Airtable.list returns a promise.
 
 ```js
 var airtable = new Airtable({apiKey, base, table, view}, count)
-var airtable.list().then(resp => {
+airtable.list().then(resp => {
   console.log(resp)
 })
 
