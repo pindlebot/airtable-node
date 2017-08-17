@@ -4,6 +4,7 @@ node_js:
 branches:
   only:
   - master
+  - /^greenkeeper/.*$/
 before_install:
 - openssl aes-256-cbc -K $encrypted_3f358765692c_key -iv $encrypted_3f358765692c_iv
   -in .coveralls.yml.enc -out .coveralls.yml -d
