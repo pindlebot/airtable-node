@@ -53,4 +53,3 @@ describe('Test errors', function () {
     }, Error);
   });
 });
-

@@ -1,6 +1,8 @@
 'use strict';
 const fetch = require('isomorphic-fetch');
 
+const BASE_ENDPOINT = 'https://api.airtable.com/v0/'
+
 function createFetch(params, url) {
   return fetch(url, params).then(resp => resp.json())
     .then(resp => {
@@ -30,14 +32,18 @@ function Airtable(params, count = 10, offset = '') {
   this.createFetch = createFetch;
 }
 
-Airtable.prototype.list = function (view = this.airtable.view, count = this.airtable.count, offset = this.airtable.offset) {
+Airtable.prototype.list = function (
+  view = this.airtable.view,
+  count = this.airtable.count,
+  offset = this.airtable.offset
+) {
   var {base, table, headers} = this.airtable;
   var params = {
     method: 'GET',
     headers
   };
   var req = (result = null, offset = '') => {
-    var url = `https://api.airtable.com/v0/${base}/${table}?maxRecords=${count}&offset=${offset}&view=${view}`;
+    var url = `${BASE_ENDPOINT}${base}/${table}?maxRecords=${count}&offset=${offset}&view=${view}`;
     return this.createFetch(params, url)
       .then(resp => {
         if (!resp || !resp.records) {
@@ -77,7 +83,7 @@ Airtable.prototype.update = function (fields, id) {
     headers,
     body: JSON.stringify({fields})
   };
-  var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
+  var url = `${BASE_ENDPOINT}${base}/${table}/${id}`;
   return this.createFetch(params, url);
 };
 
@@ -87,7 +93,7 @@ Airtable.prototype.retrieve = function (id) {
     method: 'GET',
     headers
   };
-  var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
+  var url = `${BASE_ENDPOINT}${base}/${table}/${id}`;
   return this.createFetch(params, url);
 };
 
@@ -97,7 +103,7 @@ Airtable.prototype.delete = function (id) {
     method: 'DELETE',
     headers
   };
-  var url = `https://api.airtable.com/v0/${base}/${table}/${id}`;
+  var url = `${BASE_ENDPOINT}${base}/${table}/${id}`;
   return this.createFetch(params, url);
 };
 
@@ -109,7 +115,7 @@ Airtable.prototype.create = function (fields) {
     headers,
     body: JSON.stringify({fields})
   };
-  var url = `https://api.airtable.com/v0/${base}/${table}`;
+  var url = `${BASE_ENDPOINT}${base}/${table}`;
   return this.createFetch(params, url);
 };
 
