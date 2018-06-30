@@ -42,8 +42,8 @@ offset //optional
 
 ### Airtable({ apiKey, base, table, view })
 
-- required: apiKey, base, table
-- optional: view, count 
+- required: apiKey
+- all other parameters can be set via chaining
 
 
 #### Example
@@ -68,9 +68,7 @@ airtable.list({
 
 ```
 
-### Airtable.update(fields, id)
-
-- required: fields, id
+### Airtable.update(id, { fields })
 
 #### Example
 
@@ -119,7 +117,7 @@ airtable.delete(id).then(resp => {
 
 ## License
 
-MIT © [Ben](http://www.focuswish.com)
+MIT © [Ben](http://www.menubar.io)
 
 
 [npm-image]: https://badge.fury.io/js/airtable-node.svg
