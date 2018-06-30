@@ -20,7 +20,7 @@ class Transactions {
 }
 
 class Airtable {
-  constructor (config) {
+  constructor (config = {}) {
     this.transactions = new Transactions()
     this.config = config
   }
@@ -75,7 +75,6 @@ class Airtable {
     }, []).join('&')
     return url
   }
-
 
   list (params = {}, offset) {
     const { apiKey } = this.config

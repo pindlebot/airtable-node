@@ -12,16 +12,27 @@ $ npm i airtable-node --save
 ```js
 const Airtable = require('airtable-node');
 
-const airtable = new Airtable({apiKey, base, table, view})
+const airtable = new Airtable()
+  .base('appRvT3sM3XOBruUk')
+  .table('Team%20Members')
+  .view('Main%20View')
 
 airtable.list().then(resp => {
   console.log(resp)
 })
 
-const view = 'my airtable view'
-const count = 20
-
-airtable.list(view, count).then(resp => {
+airtable.list({
+  filterByFormula: `NOT({Feature} = '')`,
+  maxRecords: 200, // optional
+  pageSize: 100, // optional 
+  sort: 'asc', // optional
+  view: 'Airtable%20View', // optional
+  cellFormat: 'json', // optional
+  timeZone, // optional
+  userLocale // optional
+},
+offset //optional
+).then(resp => {
   console.log(resp)
 })
 
@@ -29,7 +40,7 @@ airtable.list(view, count).then(resp => {
 
 ## Methods 
 
-### Airtable({ apiKey, base, table, view }, count)
+### Airtable({ apiKey, base, table, view })
 
 - required: apiKey, base, table
 - optional: view, count 
@@ -38,20 +49,17 @@ airtable.list(view, count).then(resp => {
 #### Example
 
 ```js
-const airtable = new Airtable({apiKey, base, table, view}, count)
+const airtable = new Airtable({ apiKey, base, table, view })
 ```
 
-### Airtable.list(view, count)
-
-- optional: view, count
-- required: view (if no view is set by Airtable(...))
+### Airtable.list(params)
 
 Airtable.list returns a promise.
 
 #### Example
 
 ```js
-const airtable = new Airtable({apiKey, base, table, view}, count)
+const airtable = new Airtable({ apiKey, base, table, view })
 airtable.list({
   maxRecords: 200
 }).then(resp => {
@@ -67,7 +75,7 @@ airtable.list({
 #### Example
 
 ```js
-const airtable = new Airtable({apiKey, base, table})
+const airtable = new Airtable({ apiKey, base, table })
 const id = 'airtable record id'
 const fields = {
   some_field_name: 'some value'
