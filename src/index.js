@@ -5,25 +5,6 @@ const createFetch = ({ url, ...params }) =>
   fetch(url, params)
     .then(resp => resp.json())
 
-const stringify = (
-  { base, table, view },
-  params,
-  offset = ''
-) => {
-  params = {
-    maxRecords: 20,
-    view,
-    offset,
-    ...params
-  }
-  let url = `${BASE_ENDPOINT}${base}/${table}?`
-  url += Object.keys(params).reduce((acc, key) => {
-    acc.push(`${key}=${params[key]}`)
-    return acc
-  }, []).join('&')
-  return url
-}
-
 class Transactions {
   constructor () {
     this.transactions = []
@@ -35,10 +16,6 @@ class Transactions {
 
   value () {
     return Promise.all(this.transactions.map(fn => fn()))
-      .then(data => {
-        this.transactions = []
-        return data.length === 1 ? data[0] : data
-      })
   }
 }
 
@@ -70,16 +47,40 @@ class Airtable {
 
   value () {
     return this.transactions.value()
+      .then(data => {
+        this.transactions = new Transactions()
+        return data
+      })
   }
 
   write () {
-    return this.transactions.value()
+    return this.value()
   }
 
-  list (params = {}) {
+  stringify (
+    params,
+    offset = ''
+  ) {
+    const { base, table, view } = this.config
+    const merged = {
+      maxRecords: 20,
+      view,
+      offset,
+      ...params
+    }
+    let url = `${BASE_ENDPOINT}${base}/${table}?`
+    url += Object.keys(merged).reduce((acc, key) => {
+      acc.push(`${key}=${merged[key]}`)
+      return acc
+    }, []).join('&')
+    return url
+  }
+
+
+  list (params = {}, offset) {
     const { apiKey } = this.config
     const req = (result = null, offset = '') => {
-      const url = stringify(this.config, params, offset)
+      const url = this.stringify(params, offset)
       return createFetch({
         url,
         method: 'GET',
@@ -113,7 +114,7 @@ class Airtable {
         return req(result, offset)
       })
     }
-    return this.enqueue(() => req(null, params.offset || ''))
+    return this.enqueue(() => req(null, offset))
   }
 
   update (id, params) {

@@ -52,7 +52,9 @@ Airtable.list returns a promise.
 
 ```js
 const airtable = new Airtable({apiKey, base, table, view}, count)
-airtable.list().then(resp => {
+airtable.list({
+  maxRecords: 200
+}).then(resp => {
   console.log(resp)
 })
 
@@ -71,7 +73,7 @@ const fields = {
   some_field_name: 'some value'
 }
 
-airtable.update(fields, id).then(resp => {
+airtable.update(id, { fields }).then(resp => {
   console.log(resp)
 })
 ```
@@ -81,10 +83,10 @@ airtable.update(fields, id).then(resp => {
 - required: id
 
 ```js
-const airtable = new Airtable({apiKey, base, table})
+const airtable = new Airtable({ apiKey, base, table })
 const id = 'airtable record id'
 
-airtable.update(id).then(resp => {
+airtable.retrieve(id).then(resp => {
   console.log(resp)
 })
 ```
