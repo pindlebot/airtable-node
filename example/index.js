@@ -12,6 +12,8 @@ const log = promise => promise.then(data => {
 })
 
 const airtable = new Airtable({apiKey, base, table, view})
-const promise = airtable.list(200).value()
+const promise = airtable.list({
+  maxRecords: 110
+}).value()
 //const promise = airtable.get('recSE4QPq9mTf7zKR').value()
 log(promise)

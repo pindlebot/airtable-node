@@ -14,7 +14,8 @@
     "api"
   ],
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+    "query-string": "^6.1.0"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha",

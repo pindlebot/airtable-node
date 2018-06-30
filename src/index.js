@@ -1,22 +1,35 @@
 const fetch = require('isomorphic-fetch')
-
 const BASE_ENDPOINT = 'https://api.airtable.com/v0/'
 
 const createFetch = ({ url, ...params }) =>
   fetch(url, params)
     .then(resp => resp.json())
-    .catch(err => {
-      console.error(err)
-      return err
-    })
 
+const stringify = (
+  { base, table, view },
+  params,
+  offset = ''
+) => {
+  params = {
+    maxRecords: 20,
+    view,
+    offset,
+    ...params
+  }
+  let url = `${BASE_ENDPOINT}${base}/${table}?`
+  url += Object.keys(params).reduce((acc, key) => {
+    acc.push(`${key}=${params[key]}`)
+    return acc
+  }, []).join('&')
+  return url
+}
 
 class Transactions {
-  constructor() {
+  constructor () {
     this.transactions = []
   }
 
-  push(transaction) {
+  push (transaction) {
     this.transactions.push(transaction)
   }
 
@@ -30,18 +43,9 @@ class Transactions {
 }
 
 class Airtable {
-  constructor(params, count = 10, offset = '') {
-    const { base, table, view, apiKey } = params
+  constructor (config) {
     this.transactions = new Transactions()
-
-    this.airtable = {
-      base,
-      table,
-      view,
-      count,
-      offset,
-      apiKey
-    }
+    this.config = config
   }
 
   base (ref) {
@@ -55,7 +59,7 @@ class Airtable {
   }
 
   view (ref) {
-    this.view = view
+    this.view = ref
     return this
   }
 
@@ -72,54 +76,48 @@ class Airtable {
     return this.transactions.value()
   }
 
-  list (
-    count = this.airtable.count,
-    offset = this.airtable.offset
-  ) {
-    const { base, table, apiKey, view } = this.airtable
-    const req = (accumulator = null, offset = '') => {
-      let url = `${BASE_ENDPOINT}${base}/${table}`
-      url += `?maxRecords=${count}&view=${view}&offset=${offset}`
+  list (params = {}) {
+    const { apiKey } = this.config
+    const req = (result = null, offset = '') => {
+      const url = stringify(this.config, params, offset)
       return createFetch({
         url,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + apiKey
         }
-      }).then(data => {
-        let { records, offset } = data
-        if (!records) {
-          return data
+      }).then(resp => {
+        if (!resp || !resp.records) {
+          return resp
         }
 
-        if (accumulator && records.length) {
-          // Append the new `records` to the `accumulator` object.
-          accumulator.records = accumulator.records.concat(records)
+        if (result) {
+          // Append the new `records` to the `result` object.
+          if (resp.records.length) {
+            result.records = result.records.concat(resp.records)
+          }
         } else {
-          accumulator = data
+          result = resp
         }
 
-        if (!offset) {
-          return accumulator
+        if (!resp.offset) {
+          return result
         }
 
-        // Remove the key from the `result` object
-        // but store the `offset` in an intermediate
-        // to pass to therecursive fuction below for
-        // requesting the new list.
-        offset = data.offset
-        delete accumulator.offset
+        // Remove the key from the `result` object but store the `offset` in an intermediate variable to pass to the
+        // recursive fuction below for requesting the new list.
+        offset = resp.offset
+        delete result.offset
 
-        // Recursively request the next list, starting
-        // at the current list's `offset` value.
-        return req(accumulator, offset)
+        // Recursively request the next list, starting at the current list's `offset` value.
+        return req(result, offset)
       })
     }
-    return this.enqueue(() => req(null, offset))
+    return this.enqueue(() => req(null, params.offset || ''))
   }
 
-  update (fields, id) {
-    const { base, table, apiKey } = this.airtable
+  update (id, params) {
+    const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
     return this.enqueue(
       () => createFetch({
@@ -129,13 +127,13 @@ class Airtable {
           'Content-type': 'application/json',
           'Authorization': 'Bearer ' + apiKey
         },
-        body: JSON.stringify({ fields })
+        body: JSON.stringify(params)
       })
     )
   }
 
   retrieve (id) {
-    const { base, table, apiKey } = this.airtable
+    const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
     return this.enqueue(
       () => createFetch({
@@ -149,7 +147,7 @@ class Airtable {
   }
 
   delete (id) {
-    const { base, table, apiKey } = this.airtable
+    const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
     return this.enqueue(
       () => createFetch({
@@ -162,8 +160,8 @@ class Airtable {
     )
   }
 
-  create (fields) {
-    const { base, table, apiKey } = this.airtable
+  create (params) {
+    const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}`
     return this.enqueue(
       () => createFetch({
@@ -173,7 +171,7 @@ class Airtable {
           'Content-type': 'application/json',
           'Authorization': 'Bearer ' + apiKey
         },
-        body: JSON.stringify({ fields })
+        body: JSON.stringify(params)
       })
     )
   }
