@@ -10,16 +10,16 @@ $ npm i airtable-node --save
 ## Usage
 
 ```js
-var Airtable = require('airtable-node');
+const Airtable = require('airtable-node');
 
-var airtable = new Airtable({apiKey, base, table, view})
+const airtable = new Airtable({apiKey, base, table, view})
 
 airtable.list().then(resp => {
   console.log(resp)
 })
 
-var view = 'my airtable view'
-var count = 20
+const view = 'my airtable view'
+const count = 20
 
 airtable.list(view, count).then(resp => {
   console.log(resp)
@@ -29,7 +29,7 @@ airtable.list(view, count).then(resp => {
 
 ## Methods 
 
-### Airtable({apiKey, base, table, view}, count)
+### Airtable({ apiKey, base, table, view }, count)
 
 - required: apiKey, base, table
 - optional: view, count 
@@ -38,7 +38,7 @@ airtable.list(view, count).then(resp => {
 #### Example
 
 ```js
-var airtable = new Airtable({apiKey, base, table, view}, count)
+const airtable = new Airtable({apiKey, base, table, view}, count)
 ```
 
 ### Airtable.list(view, count)
@@ -51,7 +51,7 @@ Airtable.list returns a promise.
 #### Example
 
 ```js
-var airtable = new Airtable({apiKey, base, table, view}, count)
+const airtable = new Airtable({apiKey, base, table, view}, count)
 airtable.list().then(resp => {
   console.log(resp)
 })
@@ -65,9 +65,9 @@ airtable.list().then(resp => {
 #### Example
 
 ```js
-var airtable = new Airtable({apiKey, base, table})
-var id = 'airtable record id'
-var fields = {
+const airtable = new Airtable({apiKey, base, table})
+const id = 'airtable record id'
+const fields = {
   some_field_name: 'some value'
 }
 
@@ -81,8 +81,8 @@ airtable.update(fields, id).then(resp => {
 - required: id
 
 ```js
-var airtable = new Airtable({apiKey, base, table})
-var id = 'airtable record id'
+const airtable = new Airtable({apiKey, base, table})
+const id = 'airtable record id'
 
 airtable.update(id).then(resp => {
   console.log(resp)
@@ -96,8 +96,8 @@ airtable.update(id).then(resp => {
 #### Example
 
 ```js
-var airtable = new Airtable({apiKey, base, table})
-var id = 'airtable record id'
+const airtable = new Airtable({apiKey, base, table})
+const id = 'airtable record id'
 
 airtable.delete(id).then(resp => {
   console.log(resp)

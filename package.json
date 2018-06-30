@@ -2,65 +2,37 @@
   "name": "airtable-node",
   "version": "0.1.2",
   "description": "Node wrapper for Airtable API.",
-  "homepage": "https://github.com/focuswish/airtable-node",
+  "homepage": "https://github.com/unshift/airtable-node",
   "author": {
     "name": "Ben",
-    "email": "ben@focuswish.com",
-    "url": "http://www.focuswish.com"
+    "url": "https://menubar.io"
   },
-  "files": [
-    "lib"
-  ],
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "keywords": [
     "airtable",
     "node",
     "api"
   ],
-  "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-plugin-istanbul": "^4.1.4",
-    "babel-preset-es2015": "^6.24.1",
-    "chai": "^4.0.2",
-    "chai-as-promised": "^7.1.1",
-    "coveralls": "^2.13.1",
-    "cross-env": "^5.0.1",
-    "env2": "^2.2.0",
-    "eslint": "^4.1.0",
-    "eslint-config-xo-space": "^0.16.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
-    "mocha-lcov-reporter": "^1.3.0",
-    "nsp": "^2.6.3",
-    "nyc": "^11.0.3"
-  },
-  "scripts": {
-    "build": "babel src -d lib",
-    "lint": "eslint ./src --fix",
-    "travis-test": "nyc ./node_modules/.bin/mocha",
-    "test": "cross-env NODE_ENV=test nyc mocha",
-    "deploy": "git add . && git commit -am \"new\" && npm version patch && git push origin -u master",
-    "report": "nyc npm test && nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
-  },
-  "eslintConfig": {
-    "extends": "xo-space",
-    "env": {
-      "node": true
-    }
-  },
-  "nyc": {
-    "require": [
-      "babel-register"
-    ],
-    "sourceMap": false,
-    "instrument": false
-  },
-  "repository": "focuswish/airtable-node",
-  "jest": {
-    "testEnvironment": "node"
-  },
-  "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha",
+    "report": "yarn test && yarn report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unshift/airtable-node.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "coveralls": "3.0.2",
+    "dotenv": "^6.0.0",
+    "eslint": "^5.0.1",
+    "mocha": "^5.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "standard": "^11.0.1"
   }
 }
