@@ -15,7 +15,11 @@ class Transactions {
   }
 
   value () {
-    return Promise.all(this.transactions.map(fn => fn()))
+    let data = []
+    while (this.transactions.length) {
+      data.push(this.transactions.shift())
+    }
+    return data.length === 1 ? Promise.resolve(data[0]) : Promise.all(data)
   }
 }
 
@@ -47,10 +51,6 @@ class Airtable {
 
   value () {
     return this.transactions.value()
-      .then(data => {
-        this.transactions = new Transactions()
-        return data && data.length === 1 ? data[0] : data
-      })
   }
 
   write () {
