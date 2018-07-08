@@ -113,67 +113,59 @@ class Airtable {
         return req(result, offset)
       })
     }
-    return this.enqueue(() => req(null, offset))
+    return req(null, offset)
   }
 
   update (id, params) {
     const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
-    return this.enqueue(
-      () => createFetch({
-        url,
-        method: 'PATCH',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': 'Bearer ' + apiKey
-        },
-        body: JSON.stringify(params)
-      })
-    )
+    return createFetch({
+      url,
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify(params)
+    })
   }
 
   retrieve (id) {
     const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
-    return this.enqueue(
-      () => createFetch({
-        url,
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + apiKey
-        }
-      })
-    )
+    return createFetch({
+      url,
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + apiKey
+      }
+    })
   }
 
   delete (id) {
     const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
-    return this.enqueue(
-      () => createFetch({
-        url,
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer ' + apiKey
-        }
-      })
-    )
+    return createFetch({
+      url,
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + apiKey
+      }
+    })
   }
 
   create (params) {
     const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${table}`
-    return this.enqueue(
-      () => createFetch({
-        url,
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': 'Bearer ' + apiKey
-        },
-        body: JSON.stringify(params)
-      })
-    )
+    return createFetch({
+      url,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify(params)
+    })
   }
 
   get (...args) {

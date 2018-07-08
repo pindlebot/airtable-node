@@ -19,7 +19,7 @@ const log = promise => promise.then(data => {
 describe('Airtable.list', function () {
   it('Airtable.list', function (done) {
     const airtable = new Airtable({apiKey, base, table, view})
-    const promise = airtable.list({}).value()
+    const promise = airtable.list({})
     log(promise)
     promise.should.eventually.be.fulfilled.notify(done)
   })
@@ -28,7 +28,7 @@ describe('Airtable.list', function () {
 describe('Airtable.create', function () {
   it('Airtable.create', function (done) {
     const airtable = new Airtable({apiKey, base, table, view})
-    const promise = airtable.create({ fields: {Name: 'Bob'} }).value()
+    const promise = airtable.create({ fields: {Name: 'Bob'} })
     log(promise)
     promise.should.eventually.be.fulfilled.notify(done)
   })

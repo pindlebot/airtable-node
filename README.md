@@ -17,7 +17,7 @@ const airtable = new Airtable()
   .table('Team%20Members')
   .view('Main%20View')
 
-airtable.list().value().then(resp => {
+airtable.list().then(resp => {
   console.log(resp)
 })
 
@@ -62,7 +62,7 @@ Airtable.list returns a promise.
 const airtable = new Airtable({ apiKey, base, table, view })
 airtable.list({
   maxRecords: 200
-}).value().then(resp => {
+}).then(resp => {
   console.log(resp)
 })
 
@@ -79,7 +79,7 @@ const fields = {
   some_field_name: 'some value'
 }
 
-airtable.update(id, { fields }).value().then(resp => {
+airtable.update(id, { fields }).then(resp => {
   console.log(resp)
 })
 ```
@@ -92,7 +92,7 @@ airtable.update(id, { fields }).value().then(resp => {
 const airtable = new Airtable({ apiKey, base, table })
 const id = 'airtable record id'
 
-airtable.retrieve(id).value().then(resp => {
+airtable.retrieve(id).then(resp => {
   console.log(resp)
 })
 ```
@@ -107,7 +107,7 @@ airtable.retrieve(id).value().then(resp => {
 const airtable = new Airtable({apiKey, base, table})
 const id = 'airtable record id'
 
-airtable.delete(id).value().then(resp => {
+airtable.delete(id).then(resp => {
   console.log(resp)
 })
 
