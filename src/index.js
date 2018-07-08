@@ -49,7 +49,7 @@ class Airtable {
     return this.transactions.value()
       .then(data => {
         this.transactions = new Transactions()
-        return data
+        return data && data.length === 1 ? data[0] : data
       })
   }
 
