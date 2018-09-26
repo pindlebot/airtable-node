@@ -18,7 +18,8 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha",
-    "report": "yarn test && yarn report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
+    "report": "yarn test && yarn report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js",
+    "lint": "standard src/*.js --fix"
   },
   "repository": {
     "type": "git",

@@ -12,9 +12,9 @@ $ npm i airtable-node --save
 ```js
 const Airtable = require('airtable-node');
 
-const airtable = new Airtable()
+const airtable = new Airtable({ apiKey: 'xxx' })
   .base('appRvT3sM3XOBruUk')
-  .table('Team%20Members')
+  .table('Team Members')
 
 airtable.list().then(resp => {
   console.log(resp)
@@ -24,8 +24,8 @@ airtable.list({
   filterByFormula: `NOT({Feature} = '')`, // optional
   maxRecords: 200, // optional
   pageSize: 100, // optional 
-  sort: 'asc', // optional
-  view: 'Airtable%20View', // optional
+  sort: [{ field: 'name', direction: 'asc' }], // optional
+  view: 'Airtable View', // optional
   cellFormat: 'json', // optional
   timeZone, // optional
   userLocale // optional

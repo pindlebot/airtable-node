@@ -1,4 +1,6 @@
 const fetch = require('isomorphic-fetch')
+const serialize = require('./serialize')
+
 const BASE_ENDPOINT = 'https://api.airtable.com/v0/'
 
 const createFetch = ({ url, ...params }) =>
@@ -34,16 +36,16 @@ class Airtable {
       maxRecords: 20,
       ...params
     }
-  
+
     if (typeof offset !== 'undefined') {
       merged.offset = offset
     }
-  
+
     if (view) {
       merged.view = view
     }
-  
-    let url = `${BASE_ENDPOINT}${base}/${table}`
+
+    let url = `${BASE_ENDPOINT}${base}/${encodeURIComponent(table)}`
 
     if (Object.keys(merged).length) {
       url += `?${serialize(merged)}`
@@ -63,7 +65,7 @@ class Airtable {
           Authorization: 'Bearer ' + apiKey
         }
       })
-    
+
       if (!data || !data.records) {
         return data
       }
@@ -154,4 +156,3 @@ class Airtable {
 }
 
 module.exports = Airtable
-
