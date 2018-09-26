@@ -26,61 +26,64 @@ class Airtable {
   }
 
   stringify (
-    params,
+    params = {},
     offset = ''
   ) {
     const { base, table, view } = this.config
     const merged = {
       maxRecords: 20,
-      view,
-      offset,
       ...params
     }
-    let url = `${BASE_ENDPOINT}${base}/${table}?`
-    url += Object.keys(merged).reduce((acc, key) => {
-      acc.push(`${key}=${merged[key]}`)
-      return acc
-    }, []).join('&')
+  
+    if (typeof offset !== 'undefined') {
+      merged.offset = offset
+    }
+  
+    if (view) {
+      merged.view = view
+    }
+  
+    let url = `${BASE_ENDPOINT}${base}/${table}`
+
+    if (Object.keys(merged).length) {
+      url += `?${serialize(merged)}`
+    }
     return url
   }
 
-  list (params = {}, offset) {
+  async list (params = {}, offset) {
     const { apiKey } = this.config
 
-    const req = (result = null, offset = '') => {
+    const req = (accumulator = null, offset = '') => {
       const url = this.stringify(params, offset)
-      return createFetch({
+      let data = await createFetch({
         url,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + apiKey
         }
-      }).then(resp => {
-        if (!resp || !resp.records) {
-          return resp
-        }
-
-        if (result) {
-          // Append the new `records` to the `result` object.
-          if (resp.records.length) {
-            result.records = result.records.concat(resp.records)
-          }
-        } else {
-          result = resp
-        }
-
-        if (!resp.offset) {
-          return result
-        }
-
-        // Remove the key from the `result` object but store the `offset` in an intermediate variable to pass to the
-        // recursive fuction below for requesting the new list.
-        offset = resp.offset
-        delete result.offset
-
-        // Recursively request the next list, starting at the current list's `offset` value.
-        return req(result, offset)
       })
+    
+      if (!data || !data.records) {
+        return data
+      }
+
+      let { records } = data
+
+      if (accumulator) {
+        if (records.length) {
+          accumulator.records = accumulator.records.concat(records)
+        }
+      } else {
+        accumulator = data
+      }
+
+      if (!data.offset) {
+        return accumulator
+      }
+
+      delete accumulator.offset
+      return req(accumulator, data.offset)
     }
     return req(null, offset)
   }
