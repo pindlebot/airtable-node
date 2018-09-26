@@ -15,7 +15,6 @@ const Airtable = require('airtable-node');
 const airtable = new Airtable()
   .base('appRvT3sM3XOBruUk')
   .table('Team%20Members')
-  .view('Main%20View')
 
 airtable.list().then(resp => {
   console.log(resp)
