@@ -5,56 +5,24 @@ const createFetch = ({ url, ...params }) =>
   fetch(url, params)
     .then(resp => resp.json())
 
-class Transactions {
-  constructor () {
-    this.transactions = []
-  }
-
-  push (transaction) {
-    this.transactions.push(transaction)
-  }
-
-  value () {
-    let data = []
-    while (this.transactions.length) {
-      data.push(this.transactions.shift())
-    }
-    return data.length === 1 ? Promise.resolve(data[0]) : Promise.all(data)
-  }
-}
-
 class Airtable {
   constructor (config = {}) {
-    this.transactions = new Transactions()
     this.config = config
   }
 
   base (ref) {
-    this.base = ref
+    this.config.base = ref
     return this
   }
 
   table (ref) {
-    this.table = ref
+    this.config.table = ref
     return this
   }
 
   view (ref) {
-    this.view = ref
+    this.config.view = ref
     return this
-  }
-
-  enqueue (transaction) {
-    this.transactions.push(transaction)
-    return this
-  }
-
-  value () {
-    return this.transactions.value()
-  }
-
-  write () {
-    return this.value()
   }
 
   stringify (
@@ -78,6 +46,7 @@ class Airtable {
 
   list (params = {}, offset) {
     const { apiKey } = this.config
+
     const req = (result = null, offset = '') => {
       const url = this.stringify(params, offset)
       return createFetch({
@@ -166,6 +135,10 @@ class Airtable {
       },
       body: JSON.stringify(params)
     })
+  }
+
+  set (...args) {
+    return this.update(...args)
   }
 
   get (...args) {
