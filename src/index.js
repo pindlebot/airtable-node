@@ -51,10 +51,10 @@ class Airtable {
     return url
   }
 
-  async list (params = {}, offset) {
+  list (params = {}, offset) {
     const { apiKey } = this.config
 
-    const req = (accumulator = null, offset = '') => {
+    const req = async (accumulator = null, offset = '') => {
       const url = this.stringify(params, offset)
       let data = await createFetch({
         url,
