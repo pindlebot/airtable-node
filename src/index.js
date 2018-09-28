@@ -1,6 +1,15 @@
 const fetch = require('isomorphic-fetch')
 const serialize = require('./serialize')
 
+const safeEncodeURIComponent = string => {
+  let decoded = decodeURIComponent(string)
+  while (string !== decoded) {
+    string = decoded
+    decoded = decodeURIComponent(string)
+  }
+  return encodeURIComponent(decoded)
+}
+
 const BASE_ENDPOINT = 'https://api.airtable.com/v0/'
 
 const createFetch = ({ url, ...params }) =>
@@ -45,7 +54,7 @@ class Airtable {
       merged.view = view
     }
 
-    let url = `${BASE_ENDPOINT}${base}/${encodeURIComponent(table)}`
+    let url = `${BASE_ENDPOINT}${safeEncodeURIComponent(base)}/${safeEncodeURIComponent(table)}`
 
     if (Object.keys(merged).length) {
       url += `?${serialize(merged)}`
