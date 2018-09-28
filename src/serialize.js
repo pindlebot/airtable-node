@@ -1,6 +1,15 @@
 
 // lifted from https://github.com/jquery/jquery/blob/2.2-stable/src/serialize.js
 
+const safeEncodeURIComponent = string => {
+  let decoded = decodeURIComponent(string)
+  while (string !== decoded) {
+    string = decoded
+    decoded = decodeURIComponent(string)
+  }
+  return encodeURIComponent(decoded)
+}
+
 function buildParams (prefix, maybeArray, insert) {
   if (Array.isArray(maybeArray)) {
     maybeArray.forEach((value, index) => {
@@ -20,11 +29,13 @@ function buildParams (prefix, maybeArray, insert) {
   }
 }
 
-module.exports = (obj) => {
+module.exports.safeEncodeURIComponent = safeEncodeURIComponent
+
+module.exports.serialize = (obj) => {
   const parts = []
   const insert = (key, value) => {
     value = (value === null || value === undefined) ? '' : value
-    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value))
+    parts.push(safeEncodeURIComponent(key) + '=' + safeEncodeURIComponent(value))
   }
 
   Object.keys(obj).forEach(key => {
