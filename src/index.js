@@ -9,6 +9,8 @@ const createFetch = ({ url, ...params }) =>
 
 class Airtable {
   constructor (config = {}) {
+    const noop = () => {}
+    this.log = config.log || noop
     this.config = config
   }
 
@@ -28,17 +30,12 @@ class Airtable {
   }
 
   stringify (
-    params = {},
-    offset = ''
+    params = {}
   ) {
     const { base, table, view } = this.config
     const merged = {
       maxRecords: 20,
       ...params
-    }
-
-    if (typeof offset !== 'undefined') {
-      merged.offset = offset
     }
 
     if (view) {
@@ -53,18 +50,24 @@ class Airtable {
     return url
   }
 
-  list (params = {}, offset) {
+  list (params = {}) {
     const { apiKey } = this.config
 
     const req = async (accumulator = null, offset = '') => {
-      const url = this.stringify(params, offset)
+      console.log(offset)
+      const url = this.stringify({ ...params, offset })
+
+      this.log(url)
+
       let data = await createFetch({
         url,
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + apiKey
+          Authorization: `Bearer ${apiKey}`
         }
       })
+
+      this.log(data)
 
       if (!data || !data.records) {
         return data
@@ -84,15 +87,18 @@ class Airtable {
         return accumulator
       }
 
+      offset = data.offset
       delete accumulator.offset
-      return req(accumulator, data.offset)
+      return req(accumulator, offset)
     }
-    return req(null, offset)
+
+    return req(null, params.offset || '')
   }
 
   update (id, params) {
     const { base, table, apiKey } = this.config
-    const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
+    const url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}/${id}`
+    this.log(url)
     return createFetch({
       url,
       method: 'PATCH',
@@ -106,7 +112,8 @@ class Airtable {
 
   retrieve (id) {
     const { base, table, apiKey } = this.config
-    const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
+    const url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}/${id}`
+    this.log(url)
     return createFetch({
       url,
       method: 'GET',
@@ -118,7 +125,8 @@ class Airtable {
 
   delete (id) {
     const { base, table, apiKey } = this.config
-    const url = `${BASE_ENDPOINT}${base}/${table}/${id}`
+    const url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}/${id}`
+    this.log(url)
     return createFetch({
       url,
       method: 'DELETE',
@@ -130,7 +138,8 @@ class Airtable {
 
   create (params) {
     const { base, table, apiKey } = this.config
-    const url = `${BASE_ENDPOINT}${base}/${table}`
+    const url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}`
+    this.log(url)
     return createFetch({
       url,
       method: 'POST',

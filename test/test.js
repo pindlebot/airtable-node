@@ -10,7 +10,6 @@ chai.use(chaiAsPromised)
 const apiKey = process.env.AIRTABLE_API_KEY
 const base = process.env.AIRTABLE_BASE
 const table = process.env.AIRTABLE_TABLE
-const view = process.env.AIRTABLE_VIEW
 
 const log = promise => promise.then(data => {
   console.log(data)
@@ -18,8 +17,16 @@ const log = promise => promise.then(data => {
 
 describe('Airtable.list', function () {
   it('Airtable.list', function (done) {
-    const airtable = new Airtable({apiKey, base, table, view})
-    const promise = airtable.list({})
+    const airtable = new Airtable({
+      apiKey,
+      base,
+      table,
+      log: console.log.bind(console)
+    })
+    const promise = airtable.list({
+      maxRecords: 3,
+      pageSize: 1
+    })
     log(promise)
     promise.should.eventually.be.fulfilled.notify(done)
   })
@@ -27,8 +34,13 @@ describe('Airtable.list', function () {
 
 describe('Airtable.create', function () {
   it('Airtable.create', function (done) {
-    const airtable = new Airtable({apiKey, base, table, view})
-    const promise = airtable.create({ fields: {Name: 'Bob'} })
+    const airtable = new Airtable({
+      apiKey,
+      base,
+      table,
+      log: console.log.bind(console)
+    })
+    const promise = airtable.create({ fields: {Name: 'Tom'} })
     log(promise)
     promise.should.eventually.be.fulfilled.notify(done)
   })
