@@ -51,10 +51,10 @@ class Airtable {
     }
 
     if (view) {
-      merged.view = view
+      merged.view = safeEncodeURIComponent(view)
     }
 
-    let url = `${BASE_ENDPOINT}${safeEncodeURIComponent(base)}/${safeEncodeURIComponent(table)}`
+    let url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}`
 
     if (Object.keys(merged).length) {
       url += `?${serialize(merged)}`
