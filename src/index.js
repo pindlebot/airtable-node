@@ -95,7 +95,7 @@ class Airtable {
     return req(null, params.offset || '')
   }
 
-  update (id, params) {
+  update (id, params = {}) {
     const { base, table, apiKey } = this.config
     const url = `${BASE_ENDPOINT}${base}/${safeEncodeURIComponent(table)}/${id}`
     this.log(url)
@@ -106,7 +106,7 @@ class Airtable {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + apiKey
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify({ fields: params.fields || params })
     })
   }
 
