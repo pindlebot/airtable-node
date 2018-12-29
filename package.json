@@ -1,6 +1,6 @@
 {
   "name": "airtable-node",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Node wrapper for Airtable API.",
   "homepage": "https://github.com/unshift/airtable-node",
   "author": {
