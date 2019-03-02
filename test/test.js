@@ -20,8 +20,7 @@ describe('Airtable.list', function () {
     const airtable = new Airtable({
       apiKey,
       base,
-      table,
-      log: console.log.bind(console)
+      table
     })
     const promise = airtable.list({
       maxRecords: 3,
@@ -37,8 +36,7 @@ describe('Airtable.create', function () {
     const airtable = new Airtable({
       apiKey,
       base,
-      table,
-      log: console.log.bind(console)
+      table
     })
     const promise = airtable.create({ fields: {Name: 'Tom'} })
     log(promise)
